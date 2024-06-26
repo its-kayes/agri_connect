@@ -16,13 +16,14 @@ export class User {
 
   @Column({
     type: 'text',
-    nullable: true,
-    default: 'farmer',
-    enum: ['farmer', 'agronomists', 'admin'],
   })
   password: string;
 
-  @Column({ type: 'text' })
+  @Column({
+    type: 'text',
+    default: 'farmer',
+    enum: ['farmer', 'agronomists', 'admin'],
+  })
   role?: string;
 
   @Column({ type: 'text', nullable: true })

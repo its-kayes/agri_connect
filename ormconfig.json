@@ -1,0 +1,14 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "agri_connect",
+  "entities": ["dist/**/*.entity.js"],
+  "migrations": ["dist/migration/**/*.js"],
+  "synchronize": true,
+  "cli": {
+    "migrationsDir": "src/migration"
+  }
+}
