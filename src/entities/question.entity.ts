@@ -18,8 +18,8 @@ export class Questions {
   @Column({ type: 'text' })
   address: string;
 
-  @Column({ type: 'date' })
-  time: string;
+  @Column({ type: 'date', default: new Date() })
+  time: Date;
 
   @OneToOne(() => User)
   @JoinColumn()
