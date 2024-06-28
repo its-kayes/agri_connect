@@ -34,4 +34,58 @@ export class QuestionsService {
 
     return isSave;
   }
+
+  async AllQuestions() {
+    const questions = await this.questionsRepository.find({
+      relations: ['user'],
+      select: {
+        user: {
+          id: true,
+          name: true,
+          address: true,
+          bio: true,
+          phoneNumber: true,
+        },
+      },
+    });
+
+    return questions;
+  }
+
+  async getQuestionsByLocation(location: string) {
+    // Question based filter
+    const result = await this.questionsRepository.find({
+      where: { address: location },
+      relations: ['user'],
+      select: {
+        user: {
+          id: true,
+          name: true,
+          address: true,
+          bio: true,
+          phoneNumber: true,
+        },
+      },
+    });
+
+    return result;
+  }
+
+  async getQuestionsByUserLocation(location: string) {
+    const res = await this.questionsRepository
+      .createQueryBuilder('questions')
+      .leftJoinAndSelect('questions.user', 'user')
+      .select([
+        'questions',
+        'user.id',
+        'user.name',
+        'user.address',
+        'user.bio',
+        'user.phoneNumber',
+      ])
+      .where('user.address = :location', { location })
+      .getMany();
+
+    return res;
+  }
 }
