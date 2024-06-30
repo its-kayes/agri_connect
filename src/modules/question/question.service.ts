@@ -86,6 +86,12 @@ export class QuestionsService {
       .where('user.address = :location', { location })
       .getMany();
 
+    // const result = await this.questionsRepository.query(`
+    //   SELECT * from public."user"
+    //   `);
+
+    // console.log(result);
+
     return res;
   }
 }

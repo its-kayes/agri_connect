@@ -5,12 +5,17 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hashText } from 'src/util/hashText';
 import { EditUserDto } from './dto/edit-user.dto';
+import { Photo } from 'src/entities/photo.entity';
+import { InsertPhotoDto } from './dto/insert-photo.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
+    @InjectRepository(Photo)
+    private readonly photoRepository: Repository<Photo>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -34,5 +39,34 @@ export class UserService {
 
     if (!isUpdate) throw new HttpException('User not found', 404);
     return isUpdate;
+  }
+
+  async InsertPhoto(info: InsertPhotoDto) {
+    // const userList = await this.userRepository.query(`
+    //   SELECT * from public."user"
+    // `);
+
+    // console.log(userList);
+
+    const user = await this.userRepository.findOne({
+      where: { id: info.user },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const photo = this.photoRepository.create({
+      ...info,
+      user: user,
+    });
+
+    const isSave = await this.photoRepository.save(photo);
+
+    if (!isSave) {
+      throw new Error('User not found');
+    }
+
+    return isSave;
   }
 }
